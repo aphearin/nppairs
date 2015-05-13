@@ -2,25 +2,21 @@
 
 import numpy as np
 import nppairs
-import time
+from time import time
 
 Lbox = 250.0
 cell_size = 15.
 
 c = nppairs.NumpyPairCounter(Lbox, cell_size)	
 
-Npts = 1e6
+Npts = 1e5
 x = np.random.uniform(0, Lbox, Npts)
 y = np.random.uniform(0, Lbox, Npts)
 z = np.random.uniform(0, Lbox, Npts)
+rbins = np.logspace(-1, 1, 10)
 
-idx_sorted, slice_array = c.cell_structure(x, y, z)
-x = x[idx_sorted]
-y = y[idx_sorted]
-z = z[idx_sorted]
-
-
-ax, ay, az = c.adjacent_points(x, y, z, slice_array, 0) 
-
-
-
+start = time()
+result = c.num_pairs(x, y, z, rbins)
+end = time()
+runtime = end-start
+print("Total runtime = %.1f seconds" % runtime)
